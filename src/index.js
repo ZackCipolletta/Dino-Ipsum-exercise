@@ -31,7 +31,7 @@ function printDinos(response) {
   let ul = document.getElementById('response');
   let i = 0;
 
-  let responseArr = response[0].toString().split('');
+  let responseArr = response[0][0].split('');
   for (let x = 0; x < responseArr.length; x++) {
     let pEl = document.createElement('p');
     let pEl2 = document.createElement('p');
@@ -53,8 +53,24 @@ function printError(error) {
 function callCompareUserInput(x) {
   document.getElementById('userInputForm').addEventListener("submit", function (e) {
     e.preventDefault();
-    compareUserInput(x);
+    let userInput = document.getElementById("dinoName").value;
+    if (userInput.length <= 1) {
+      compareUserInput(x);
+    } else {
+      compareWholeName(x);
+    }
   });
+}
+
+function compareWholeName(response) {
+  let userInput = document.getElementById("dinoName").value;
+  let thisResponseName = response[0][0].toString();
+  console.log(thisResponseName);
+  console.log(userInput);
+  if (userInput.toUpperCase() === thisResponseName.toUpperCase()) {
+    document.getElementById('response').innerText = `The dino name is: ${response}. You Win!`;
+  }
+  document.getElementById('userInputForm').reset();
 }
 
 function compareUserInput(response) {
@@ -65,8 +81,6 @@ function compareUserInput(response) {
   console.log(userInput);
   thisResponse.forEach(element => {
     if (element.toUpperCase() === userInput.toUpperCase()) {
-      console.log(i)
-      console.log('hi')
       document.getElementById(`${i}`).innerText = element;
     }
     i++;
@@ -76,8 +90,4 @@ function compareUserInput(response) {
 
 window.onload = function () {
   getDino();
-  // let button = document.getElementById("submit");
-  // button.onclick = function() {
-  //   compareUserInput();
-  // }
 }
