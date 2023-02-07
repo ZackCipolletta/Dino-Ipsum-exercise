@@ -59,6 +59,7 @@ function callCompareUserInput(x) {
 
 function compareUserInput(response) {
   let userInput = document.getElementById("text").value;
+
   let i = 0;
   let thisResponse = response.toString().split('');
   console.log(userInput);
@@ -70,6 +71,7 @@ function compareUserInput(response) {
     }
     i++;
   });
+  document.getElementById('userInputForm').reset();
 }
 
 window.onload = function () {
