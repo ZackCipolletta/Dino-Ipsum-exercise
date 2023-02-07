@@ -1,35 +1,68 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
-import Triangle from './js/triangle.js';
-import Rectangle from './js/rectangle.js';
+// import DinoIpsumGenerator from './js/dinoIpsumGenerator.js';
 
-function handleTriangleForm() {
-  event.preventDefault();
-  document.querySelector('#response').innerText = null;
-  const length1 = parseInt(document.querySelector('#length1').value);
-  const length2 = parseInt(document.querySelector('#length2').value);
-  const length3 = parseInt(document.querySelector('#length3').value);
-  const triangle = new Triangle(length1, length2, length3);
-  const response = triangle.checkType();
-  const pTag = document.createElement("p");
-  pTag.append(`Your result is: ${response}.`);
-  document.querySelector('#response').append(pTag);
+function getDino() {
+  let promise = new Promise(function(resolve, reject) {
+    let request = new XMLHttpRequest();
+    const url = `https://dinoipsum.com/api/?format=json&paragraphs=1&words=1`;
+    request.addEventListener("loadend", function () {
+      const response = JSON.parse(this.responseText);
+      if (this.status === 200) {
+        resolve(response);
+      } else {
+        reject([this, response])
+      }
+    });
+    request.open("GET", url, true);
+    request.send();
+  });
+  promise.then(function(response) {
+    printDinos(response);
+  }, function(errorMEssage) {
+    printError(errorMEssage);
+  });
 }
 
-function handleRectangleForm() {
-  event.preventDefault();
-  document.querySelector('#response2').innerText = null;
-  const length1 = parseInt(document.querySelector('#rect-length1').value);
-  const length2 = parseInt(document.querySelector('#rect-length2').value);
-  const rectangle = new Rectangle(length1, length2);
-  const response = rectangle.getArea();
-  const pTag = document.createElement("p");
-  pTag.append(`The area of the rectangle is ${response}.`);
-  document.querySelector('#response2').append(pTag);
+function printDinos(response) {
+  console.log(response[0].toString().split(''));
+  let ul = document.getElementById('response');
+  let i = 0;
+
+  let responseArr = response[0].toString().split('');
+  responseArr.forEach(element => {
+    let pEl = document.createElement('p');
+    pEl.innerText = element;
+    pEl.setAttribute("id", `${i}`)
+    pEl.setAttribute("class", "hidden")
+    ul.append(pEl);
+    i++
+  });
+  return (response[0].toString().split(''));
 }
 
-window.addEventListener("load", function() {
-  document.querySelector("#triangle-checker-form").addEventListener("submit", handleTriangleForm);
-  document.querySelector("#rectangle-area-form").addEventListener("submit", handleRectangleForm);
-});
+function printError(error) {
+  console.log(error);
+}
+
+function compareUserInput(response) {
+  let userInput = document.getElementById("text");
+  let i = 0;
+  console.log(response)
+  response.forEach(element => {
+    i++
+    if(element.toUpperCase() === userInput.toUpperCase()) {
+      document.getElementById(`${i}`).removeAttribute("class")
+    }
+  })
+
+  }
+
+window.onload = function() {
+  getDino();
+  let button = document.getElementById("submit");
+  button.onclick = function() {
+    compareUserInput();
+  }
+}
