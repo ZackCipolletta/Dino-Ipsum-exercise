@@ -75,7 +75,7 @@ function compareWholeName(response) {
 
 function compareUserInput(response) {
   let userInput = document.getElementById("text").value;
-
+  let usedLetters = document.getElementById('response2');
   let i = 0;
   let thisResponse = response.toString().split('');
   console.log(userInput);
@@ -85,6 +85,15 @@ function compareUserInput(response) {
     }
     i++;
   });
+  if (Array.from(usedLetters.innerText).includes(userInput)) {
+    console.log('try again');
+  } else {
+    usedLetters.innerText += userInput;
+    let x = usedLetters.innerText.split('').sort();
+    console.log(x);
+    document.getElementById('response2').innerText = x.join("  ");
+  }
+  // usedLetters.innerText += userInput;
   document.getElementById('userInputForm').reset();
 }
 

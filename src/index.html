@@ -7,7 +7,7 @@
 
 <body>
   <div id="spacer"></div>
-  <div>
+  <div id="container">
   <form id="userInputForm">
     <label for="text">Type a letter here</label>
     <input type="text" name="text" id="text" maxlength="1" placeholder="Guess a single letter">
@@ -16,10 +16,15 @@
     <button type="submit" id="submit">Submit</button>
   </form>
 
-  <ul id="response"></ul>
 
-  <ul id="response2"></ul>
-</div>
+    <ul id="response"></ul>
+  </div>
+    <div id="usedLetters">
+      <p id>Used letters:</p>
+      <p id="response2"></p>
+    </div>
+
+
 </body>
 
 </html>
